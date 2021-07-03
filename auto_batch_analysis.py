@@ -52,7 +52,7 @@ def batch_analysis(domain_info):
     logger.debug(f'main: UserAgent: {ua.chrome}')
 
     options = Options()
-#    options.add_argument('--headless')
+    options.add_argument('--headless')
     options.add_argument(f'user-agent={ua.chrome}')
 
     try:
@@ -104,14 +104,14 @@ def write_batch_info(sheet, dr, ip):
     for cell in cell_list:
         cell.value = dr[i]
         i += 1
-    sheet.update_cells(cell_list)
+    sheet.update_cells(cell_list, value_input_option='USER_ENTERED')
 
     cell_list = sheet.range('D2:D' + str(len(ip) + 1))
     i = 0
     for cell in cell_list:
         cell.value = ip[i]
         i += 1
-    sheet.update_cells(cell_list)
+    sheet.update_cells(cell_list, value_input_option='USER_ENTERED')
 
 ### main_script ###
 if __name__ == '__main__':
