@@ -123,5 +123,7 @@ if __name__ == '__main__':
         batch_info = batch_analysis(domain_info)
         write_batch_info('List-NotJapanese', batch_info[0], batch_info[1])
         logger.info('Finish')
+        exit(0)
     except Exception as err:
         logger.error(f'main: {err}')
+        exit(1)
