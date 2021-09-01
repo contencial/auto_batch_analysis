@@ -9,6 +9,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 from fake_useragent import UserAgent
 from oauth2client.service_account import ServiceAccountCredentials
+from webdriver_manager.chrome import ChromeDriverManager
 
 # Logger setting
 from logging import getLogger, FileHandler, DEBUG
@@ -46,17 +47,16 @@ def batch_analysis(domain_info):
     url = 'https://ahrefs.com/batch-analysis'
     login = os.environ['AHREFS_ID']
     password = os.environ['AHREFS_PASS']
-    webdriverPath = os.environ["WEBDRIVER_PATH"]
 
     ua = UserAgent()
     logger.debug(f'main: UserAgent: {ua.chrome}')
 
     options = Options()
-    options.add_argument('--headless')
+#   options.add_argument('--headless')
     options.add_argument(f'user-agent={ua.chrome}')
 
     try:
-        driver = webdriver.Chrome(executable_path=webdriverPath, chrome_options=options)
+        driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
 
         driver.get(url)
         driver.set_window_size(1200, 1053)
