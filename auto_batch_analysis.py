@@ -44,7 +44,8 @@ def extract_text(elements):
         yield element.text
 
 def batch_analysis(domain_info):
-    url = 'https://ahrefs.com/batch-analysis'
+    url_login = 'https://app.ahrefs.com/user/login'
+    url_ba = 'https://app.ahrefs.com/batch-analysis'
     login = os.environ['AHREFS_ID']
     password = os.environ['AHREFS_PASS']
 
@@ -58,18 +59,19 @@ def batch_analysis(domain_info):
     try:
         driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
 
-        driver.get(url)
-        driver.set_window_size(1200, 1053)
-
-        driver.find_element_by_link_text('Sign in').send_keys(Keys.ENTER)
-        logger.info(f'batch_analysis: move to Sign in')
-        sleep(2)
+        driver.get(url_login)
+        driver.maximize_window()
 
         driver.find_element_by_name('email').send_keys(login)
         driver.find_element_by_name('password').send_keys(password)
         driver.find_element_by_xpath('//button[@type="submit"]').click()
         logger.info(f'batch_analysis: Sign in')
-        sleep(5)
+        sleep(3)
+
+        driver.find_element_by_xpath('//button[@data-toggle="dropdown"]').click()
+        sleep(1)
+        driver.find_element_by_xpath('//a[@href="/batch-analysis"]').click()
+        sleep(3)
 
         domain_list = list(split_list(domain_info, 200))
         dr_list = list()
@@ -83,7 +85,7 @@ def batch_analysis(domain_info):
             dr_list.extend(list(extract_text(dr)))
             ip = driver.find_elements_by_xpath('//tr/td[15]')
             ip_list.extend(list(extract_text(ip)))
-            driver.get(url)
+            driver.get(url_ba)
 
         driver.close()
         driver.quit()
