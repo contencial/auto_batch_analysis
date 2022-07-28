@@ -66,12 +66,12 @@ def batch_analysis(domain_info):
         driver.find_element_by_name('password').send_keys(password)
         driver.find_element_by_xpath('//button[@type="submit"]').click()
         logger.info(f'batch_analysis: Sign in')
-        sleep(3)
+        driver.implicitly_wait(60)
 
         driver.find_element_by_xpath('//button[@data-toggle="dropdown"]').click()
-        sleep(1)
+        driver.implicitly_wait(20)
         driver.find_element_by_xpath('//a[@href="/batch-analysis"]').click()
-        sleep(3)
+        sleep(5)
 
         domain_list = list(split_list(domain_info, 200))
         dr_list = list()
