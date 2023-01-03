@@ -8,6 +8,8 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.select import Select
 from selenium.webdriver.common.by import By
+from selenium.webdriver.chrome import service as fs
+from selenium.webdriver.common.by import By
 from fake_useragent import UserAgent
 from oauth2client.service_account import ServiceAccountCredentials
 from webdriver_manager.chrome import ChromeDriverManager
@@ -58,7 +60,8 @@ def batch_analysis(domain_info):
     options.add_argument(f'user-agent={ua.chrome}')
 
     try:
-        driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+        chrome_service = fs.Service(executable_path=ChromeDriverManager().install())
+        driver = webdriver.Chrome(service=chrome_service, options=options)
 
         driver.get(url_login)
         driver.maximize_window()
